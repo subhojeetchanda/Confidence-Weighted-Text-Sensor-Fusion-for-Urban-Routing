@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Air Quality Routing</title>
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+    <link rel="stylesheet" href="/static/style.css" />
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap" rel="stylesheet">
+</head>
+<body>
+    <div id="map"></div>
+    <div id="sidebar">
+        <h2>Smart AQI Routing</h2>
+        <div class="input-group">
+            <label>Origin</label>
+            <input type="text" id="origin" value="28.6139,77.2090" placeholder="Lat, Lng">
+        </div>
+        <div class="input-group">
+            <label>Destination</label>
+            <input type="text" id="dest" value="28.5355,77.2410" placeholder="Lat, Lng">
+        </div>
+        <div class="input-group">
+            <label>Activity</label>
+            <select id="activity">
+                <option value="walking">Walking</option>
+                <option value="biking">Biking</option>
+            </select>
+        </div>
+        <button onclick="calculateRoutes()">Find Routes</button>
+        
+        <div id="results"></div>
+    </div>
+    
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+    <script src="/static/app.js"></script>
+</body>
+</html>
