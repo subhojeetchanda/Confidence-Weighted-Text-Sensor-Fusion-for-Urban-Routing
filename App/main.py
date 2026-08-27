@@ -42,8 +42,18 @@ def geocode(q: str):
     }
     try:
         response = requests.get(url, params=params)
-        return response.json()
+        data = response.json()
+        if "features" not in data:
+            print("ORS Geocode Error:", data)
+            # Fallback mock data if API key fails or rate-limits on Railway
+            if "dtu" in q.lower():
+                return {"features": [{"properties": {"label": "Delhi Technological University, Delhi (Fallback)"}, "geometry": {"coordinates": [77.114162, 28.749501]}}]}
+            elif "igi" in q.lower():
+                return {"features": [{"properties": {"label": "IGI Airport, Delhi (Fallback)"}, "geometry": {"coordinates": [77.0867, 28.556463]}}]}
+            return {"features": []}
+        return data
     except Exception as e:
+        print("Geocode Exception:", e)
         return {"features": []}
 
 @app.post("/api/routes")
