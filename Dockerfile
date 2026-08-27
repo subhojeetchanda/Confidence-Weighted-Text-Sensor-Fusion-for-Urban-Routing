@@ -13,6 +13,5 @@ COPY . .
 
 WORKDIR /app/App
 
-# Run the FastAPI server
-EXPOSE 8000
-CMD ["uvicorn", "main:app", "--host", "0.0.0.0", "--port", "8000"]
+# Run the FastAPI server (uses the PORT environment variable if set by Railway, otherwise 8000)
+CMD uvicorn main:app --host 0.0.0.0 --port ${PORT:-8000}
