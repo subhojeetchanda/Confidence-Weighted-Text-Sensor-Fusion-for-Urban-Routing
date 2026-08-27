@@ -3,34 +3,72 @@
 <head>
     <title>Air Quality Routing</title>
     <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
-    <link rel="stylesheet" href="/static/style.css" />
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="/static/style.css?v=3" />
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 </head>
 <body>
     <div id="map"></div>
     <div id="sidebar">
         <h2>Smart AQI Routing</h2>
-        <div class="input-group">
-            <label>Origin</label>
-            <input type="text" id="origin" value="28.6139,77.2090" placeholder="Lat, Lng">
+        <div class="route-form-container">
+            <div class="route-timeline">
+                <div class="timeline-dot origin-dot"></div>
+                <div class="timeline-line"></div>
+                <div class="timeline-dot dest-dot"></div>
+            </div>
+            <div class="route-inputs">
+                <div class="input-group">
+                    <label>Origin</label>
+                    <div class="autocomplete-wrapper">
+                        <input type="text" id="origin-input" placeholder="Where from?">
+                        <div id="origin-dropdown" class="autocomplete-dropdown"></div>
+                    </div>
+                    <input type="hidden" id="origin-lat" value="28.6139">
+                    <input type="hidden" id="origin-lng" value="77.2090">
+                </div>
+                <div class="input-group">
+                    <label>Destination</label>
+                    <div class="autocomplete-wrapper">
+                        <input type="text" id="dest-input" placeholder="Where to?">
+                        <div id="dest-dropdown" class="autocomplete-dropdown"></div>
+                    </div>
+                    <input type="hidden" id="dest-lat" value="28.5355">
+                    <input type="hidden" id="dest-lng" value="77.2410">
+                </div>
+            </div>
         </div>
+        
         <div class="input-group">
-            <label>Destination</label>
-            <input type="text" id="dest" value="28.5355,77.2410" placeholder="Lat, Lng">
+            <label>Mode of Transport</label>
+            <div class="segmented-control">
+                <button id="btn-walking" class="segment active" onclick="setActivity('walking')">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M13 4v16"/><path d="M17 4v16"/><path d="M19 8H5"/><path d="M19 16H5"/><path d="M15 2h-6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h6a2 2 0 0 0 2-2V4a2 2 0 0 0-2-2z"/></svg> <!-- Need better icon, just use simple text + emoji or better svg -->
+                    Walking
+                </button>
+                <button id="btn-biking" class="segment" onclick="setActivity('biking')">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="5.5" cy="17.5" r="3.5"/><circle cx="18.5" cy="17.5" r="3.5"/><path d="M15 6a1 1 0 1 0 0-2 1 1 0 0 0 0 2zm-3 11.5V14l-3-3 4-3 2 3h2"/></svg>
+                    Biking
+                </button>
+                <input type="hidden" id="activity" value="walking">
+            </div>
         </div>
-        <div class="input-group">
-            <label>Activity</label>
-            <select id="activity">
-                <option value="walking">Walking</option>
-                <option value="biking">Biking</option>
-            </select>
-        </div>
-        <button onclick="calculateRoutes()">Find Routes</button>
+        
+        <button class="primary-btn" onclick="calculateRoutes()">Find Routes</button>
         
         <div id="results"></div>
     </div>
     
     <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
-    <script src="/static/app.js"></script>
+    <script src="/static/app.js?v=3"></script>
+    <script>
+        function setActivity(act) {
+            document.getElementById('activity').value = act;
+            document.getElementById('btn-walking').classList.remove('active');
+            document.getElementById('btn-biking').classList.remove('active');
+            document.getElementById('btn-' + act).classList.add('active');
+        }
+    </script>
 </body>
 </html>

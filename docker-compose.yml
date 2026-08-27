@@ -1,0 +1,12 @@
+services:
+  app:
+    build: .
+    ports:
+      - "8000:8000"
+    environment:
+      # Pass through the ORS API key if set on the host
+      - ORS_API_KEY=${ORS_API_KEY}
+    volumes:
+      # Map the App directory for hot-reloading during development
+      - ./App:/app/App
+    command: uvicorn main:app --host 0.0.0.0 --port 8000 --reload

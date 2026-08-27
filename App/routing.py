@@ -11,6 +11,7 @@ def get_routes(start_lat, start_lng, end_lat, end_lng, profile="foot-walking"):
     
     body = {
         "coordinates": [[start_lng, start_lat], [end_lng, end_lat]],
+        "elevation": "true",
         "alternative_routes": {
             "target_count": 3
         }

@@ -24,6 +24,28 @@ class RouteRequest(BaseModel):
 def read_root():
     return FileResponse("static/index.html")
 
+@app.get("/api/geocode")
+def geocode(q: str):
+    import requests
+    from routing import ORS_API_KEY
+    if not ORS_API_KEY:
+        return {"features": [{"properties": {"label": "Mock Location (Add ORS API Key)"}, "geometry": {"coordinates": [77.2090, 28.6139]}}]}
+        
+    url = "https://api.openrouteservice.org/geocode/autocomplete"
+    params = {
+        "api_key": ORS_API_KEY,
+        "text": q,
+        "boundary.rect.min_lon": 76.8,
+        "boundary.rect.max_lon": 77.5,
+        "boundary.rect.min_lat": 28.4,
+        "boundary.rect.max_lat": 28.9
+    }
+    try:
+        response = requests.get(url, params=params)
+        return response.json()
+    except Exception as e:
+        return {"features": []}
+
 @app.post("/api/routes")
 def calculate_routes(req: RouteRequest):
     profile = "foot-walking" if req.activity == "walking" else "cycling-regular"
@@ -42,8 +64,12 @@ def calculate_routes(req: RouteRequest):
         segment_results = []
         
         for i in range(len(coords) - 1):
-            lng1, lat1 = coords[i]
-            lng2, lat2 = coords[i+1]
+            pt1 = coords[i]
+            pt2 = coords[i+1]
+            lng1, lat1 = pt1[0], pt1[1]
+            lng2, lat2 = pt2[0], pt2[1]
+            elev1 = pt1[2] if len(pt1) > 2 else 0.0
+            elev2 = pt2[2] if len(pt2) > 2 else 0.0
             
             mid_lat = (lat1 + lat2) / 2
             mid_lng = (lng1 + lng2) / 2
@@ -55,7 +81,9 @@ def calculate_routes(req: RouteRequest):
             seg_dist = total_dist / max(1, (len(coords)-1))
             seg_dur = total_dur / max(1, (len(coords)-1))
             
-            dose = dose_calc.calculate_dose(seg_dist, seg_dur, concentration, req.activity)
+            gradient = (elev2 - elev1) / seg_dist if seg_dist > 0 else 0.0
+            
+            dose = dose_calc.calculate_dose(seg_dist, seg_dur, concentration, req.activity, gradient)
             total_dose += dose
             
             segment_results.append({

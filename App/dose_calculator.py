@@ -44,9 +44,15 @@ class DoseCalculator:
         else:
             return 50.0 + (zone_id * 5) % 100 # Fallback
 
-    def calculate_dose(self, distance_m, duration_s, concentration, activity="walking"):
+    def calculate_dose(self, distance_m, duration_s, concentration, activity="walking", gradient=0.0):
         # activity_multiplier: walking = 1.0, biking = 2.0 (breathing volume)
         multiplier = 2.0 if activity == "biking" else 1.0
+        
+        if gradient > 0:
+            multiplier *= (1 + gradient * 10)
+        elif gradient < 0:
+            multiplier *= max(0.5, 1 + gradient * 5)
+            
         time_hours = duration_s / 3600.0
         dose = concentration * time_hours * multiplier
         return dose
