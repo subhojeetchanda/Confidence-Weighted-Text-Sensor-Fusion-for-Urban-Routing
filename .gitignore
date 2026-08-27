@@ -1,5 +1,7 @@
 *.db
+!Dataset/delhi_aqi.db
 *.pkl
+!Model/*.pkl
 *.csv
 __pycache__/
 *.pyc
