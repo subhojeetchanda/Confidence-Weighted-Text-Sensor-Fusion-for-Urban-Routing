@@ -82,4 +82,17 @@ docker compose up --build
 *(To run in the background, append the `-d` flag: `docker compose up -d --build`)*
 
 **4. Open the App:**
-Navigate to [http://localhost:8000](http://localhost:8000) in your web browser. Type an origin and destination (autocomplete via Nominatim), toggle your mode of transport, and discover your healthiest route!
+Navigate to [http://localhost:8000](http://localhost:8000) in your web browser. Type an origin and destination (autocomplete via Nominatim/ORS), toggle your mode of transport, and discover your healthiest route!
+
+---
+
+## ☁️ Cloud Deployment (Railway)
+
+Since this project is fully Dockerized, deploying it online is incredibly simple and takes less than two minutes using [Railway](https://railway.app/):
+
+1. **Connect GitHub:** Create a new project on Railway and select "Deploy from GitHub repo".
+2. **Select Repo:** Choose your `Confidence-Weighted-Text-Sensor-Fusion-for-Urban-Routing` repository.
+3. **Set the Root Directory:** Before hitting deploy, edit the settings and set the Root Directory to `/cap-project` (this is where the Dockerfile lives).
+4. **Add Environment Variable:** Add a variable named `ORS_API_KEY` and paste your OpenRouteService API key (without quotes).
+5. **Deploy:** Click deploy! Railway will automatically detect the Dockerfile, build the image, and assign a dynamic `PORT`. 
+6. **Generate Domain:** Go to the Networking tab and click "Generate Domain" to get your live public `.up.railway.app` URL.
