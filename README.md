@@ -92,7 +92,7 @@ Since this project is fully Dockerized, deploying it online is incredibly simple
 
 1. **Connect GitHub:** Create a new project on Railway and select "Deploy from GitHub repo".
 2. **Select Repo:** Choose your `Confidence-Weighted-Text-Sensor-Fusion-for-Urban-Routing` repository.
-3. **Set the Root Directory:** Before hitting deploy, edit the settings and set the Root Directory to `/cap-project` (this is where the Dockerfile lives).
+3. **Set the Root Directory:** You can leave the Root Directory field completely **blank** (since the Dockerfile is in the main root of the repository).
 4. **Add Environment Variable:** Add a variable named `ORS_API_KEY` and paste your OpenRouteService API key (without quotes).
 5. **Deploy:** Click deploy! Railway will automatically detect the Dockerfile, build the image, and assign a dynamic `PORT`. 
 6. **Generate Domain:** Go to the Networking tab and click "Generate Domain" to get your live public `.up.railway.app` URL.
